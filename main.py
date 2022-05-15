@@ -3,7 +3,7 @@
 # UUID
 from uuid import UUID
 # date
-from datetime import date
+from datetime import date, datetime
 # Optional
 from typing import Optional
 #...E X T E R N A L
@@ -29,7 +29,7 @@ class UserLogin(UserBase):
     password: str = Field(
         ..., 
         min_length=8, 
-        max_length=30
+        max_length=30,
     )
 
 
@@ -48,12 +48,22 @@ class User(UserBase):
 
 
 class Tweet(BaseModel):
-    pass
-
+    tweet_id: UUID = Field(...)
+    content: str = Field(
+        ..., 
+        min_length=1, 
+        max_length=256
+    )
+    # Fecha y hora de creación de tweeter
+    created_at: datetime = Field(default=datetime.now())
+    update_at: Optional[datetime] = Field(default=None)
+    by: User = Field(...)
 #============FIN MODELS===========#
 
 
+#==========PATH OPERATIONS==========#
 # Path Operation del home page
 @app.get(path="/")
 def home():
     return {"Twitter API": "Wor-king!"}
+#=========FIN PATH OPERATIONS========#
