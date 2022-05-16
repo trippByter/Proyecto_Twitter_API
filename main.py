@@ -105,7 +105,7 @@ def signup(user: UserRegister = Body(...)):
             **email     : EmailStr,**
             **first_name: str,**
             **last_name : str,**
-            **birth_date: Optional[datetime]**
+            **birth_date: Optional[date]**
         **}**
     """
     # Abrimos "users.json" || "r+" -> Lectura y escritura 
@@ -219,7 +219,28 @@ def update_a_user():
     tags = ["Tweets"]
 )
 def home():
-    return {"Twitter API": "Wor-king!"}
+    """
+    Show all tweets.
+
+    This path operation shows all tweets in the app.
+
+    Parameters:
+        -
+    
+    Returns a **JSON** list with all tweets in the app, with the following keys:
+        **{**
+            **tweet_id: UUID,**
+            **content: str,**
+            **created_at: datetime,**
+            **updated_at: Optional[datetime],**
+            **by: User**
+        **}**
+    """
+    # Abrimos el users.json en modo lectura
+    with open("tweets.json", "r", encoding="utf-8") as f:
+        # Es un simil a JSON - lista de diccionarios
+        results = json.loads(f.read())
+        return results
 
 ### "/post" - Post a tweet
 @app.post(
@@ -265,7 +286,8 @@ def post(tweet: Tweet = Body(...)):
         # updated_at: datetime -> str
         tweet_dict["updated_at"] = str(tweet_dict["updated_at"])
         # by: User -> str
-        tweet_dict["by"] = str(tweet_dict["by"])
+        tweet_dict["by"]["user_id"] = str(tweet_dict["by"]["user_id"])
+        tweet_dict["by"]["birth_date"] = str(tweet_dict["by"]["birth_date"])
         results.append(tweet_dict)
         # Colocarnos al principio del archivo
         # para no escribir en la ubicación del archivo
