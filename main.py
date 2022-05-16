@@ -1,5 +1,7 @@
 #===========IMPORTS===========#
 #...P Y T H O N 
+# JSON
+import json
 # UUID
 from uuid import UUID
 # date
@@ -12,7 +14,7 @@ from pydantic import BaseModel
 from pydantic import EmailStr
 from pydantic import Field
 # FastAPI
-from fastapi import FastAPI
+from fastapi import Body, FastAPI
 from fastapi import status
 #==========FIN IMPORTS========#
 
@@ -48,7 +50,7 @@ class User(UserBase):
     birth_date: Optional[date] = Field(default=None) 
 
 
-class UserRegister(UserBase):
+class UserRegister(User):
     # Hereda de UserBase
     # y adiciona atributo "password"
     password: str = Field(
@@ -84,23 +86,47 @@ class Tweet(BaseModel):
     summary = "Register a user.",
     tags = ["Users"]
 )
-def signup():
+def signup(user: UserRegister = Body(...)):
     """
-    SignUp
-    
+    SignUp.
+
     This path operation register a user in the app.
     
-    Parameters
+    Parameters:
         - Request **body** parameter:
             - user: UserRegister.
     
     Returns a **JSON** with the basic user information: 
-        - user_id   : UUID
-        - email     : EmailStr
-        - first_name: str
-        - last_name : str
-        - birth_date: str
+       **{**
+            **user_id   : UUID,**
+            **email     : EmailStr,**
+            **first_name: str,**
+            **last_name : str,**
+            **birth_date: datetime**
+        **}**
     """
+    # Abrimos "users.json" || "r+" -> Lectura y escritura 
+    with open("users.json", "r+", encoding="utf-8") as f:
+        # f.read() -> str ((conv dicc/JSON)) -> json.loads()
+        # "results" -> lista de diccionarios (user.json->[])
+        results = json.loads(f.read())
+        
+        # req body data => str/py dict => append "results" -> user.json
+        # JSON user param(request body) => dict
+        user_dict = user.dict()
+        # Transformar datos no string a JSON 
+        # user_id: UUID -> str 
+        # birht_date: date -> str
+        user_dict["user_id"] = str(user_dict["user_id"])
+        user_dict["birth_date"] = str(user_dict["birth_date"])
+        results.append(user_dict)
+        # Colocarnos al principio del archivo
+        # para no escribir en la ubicación del archivo
+        f.seek(0)
+        # convertimos lista de diccionarios a JSON
+        f.write(json.dumps(results))
+        
+        return user
 
 ### /login
 @app.post(

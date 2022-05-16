@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "email": "user@example.com",
+    "first_name": "string",
+    "last_name": "string",
+    "birth_date": "2022-05-16",
+    "password": "stringst"
+  },
+  {
+    "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "email": "user@exytple.com",
+    "first_name": "yon",
+    "last_name": "electro",
+    "birth_date": "1972-02-26",
+    "password": "strinki888t"
+  },
+  {
+    "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "email": "uttter@exytple.com",
+    "first_name": "ychuuy",
+    "last_name": "koontyypak",
+    "birth_date": "1983-06-14",
+    "password": "sdjpisterot"
+  }
+]
