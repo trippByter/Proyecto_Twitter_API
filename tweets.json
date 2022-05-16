@@ -1,0 +1,23 @@
+[
+  {
+    "tweet_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "content": "Primer tweet de la app",
+    "created_at": "2022-05-15 22:38:54.993115",
+    "updated_at": "2022-05-16 02:39:10.311000+00:00",
+    "by": "{'user_id': UUID('3fa85f64-5717-4562-b3fc-2c963f66afa6'), 'email': 'user00@example.com', 'first_name': 'Cerozero', 'last_name': 'Cetazeta', 'birth_date': datetime.date(2002, 2, 2)}"
+  },
+  {
+    "tweet_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "content": "Segundo tweet",
+    "created_at": "2022-05-15 22:40:42.242102",
+    "updated_at": "2022-05-16 02:41:11.480000+00:00",
+    "by": "{'user_id': UUID('3fa85f64-5717-4562-b3fc-2c963f66afa6'), 'email': 'user01@example.com', 'first_name': 'CeroHuno', 'last_name': 'TresDos', 'birth_date': datetime.date(2001, 1, 1)}"
+  },
+  {
+    "tweet_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "content": "Tercer tweet",
+    "created_at": "2022-05-15 22:40:42.242102",
+    "updated_at": "2022-05-16 02:46:57.091000+00:00",
+    "by": "{'user_id': UUID('3fa85f64-5717-4562-b3fc-2c963f66afa6'), 'email': 'user00@example.com', 'first_name': 'Yon', 'last_name': 'electro', 'birth_date': datetime.date(1972, 2, 26)}"
+  }
+]

@@ -22,6 +22,8 @@ app = FastAPI();
 
 #=============MODELS============#
 # Los modelos van entre "app" y las path operations
+
+# U S E R S
 class UserBase(BaseModel):
     # Universal Unit ID
     user_id: UUID = Field(...)
@@ -60,6 +62,7 @@ class UserRegister(User):
     )
 
 
+# T W E E T S
 class Tweet(BaseModel):
     tweet_id: UUID = Field(...)
     content: str = Field(
@@ -69,7 +72,7 @@ class Tweet(BaseModel):
     )
     # Fecha y hora de creación de tweeter
     created_at: datetime = Field(default=datetime.now())
-    update_at: Optional[datetime] = Field(default=None)
+    updated_at: Optional[datetime] = Field(default=None)
     by: User = Field(...)
 #============FIN MODELS===========#
 
@@ -102,7 +105,7 @@ def signup(user: UserRegister = Body(...)):
             **email     : EmailStr,**
             **first_name: str,**
             **last_name : str,**
-            **birth_date: datetime**
+            **birth_date: Optional[datetime]**
         **}**
     """
     # Abrimos "users.json" || "r+" -> Lectura y escritura 
@@ -226,8 +229,51 @@ def home():
     summary = "Post a tweet.",
     tags = ["Tweets"]
 )
-def post():
-    pass
+def post(tweet: Tweet = Body(...)):
+    """
+    Post a Tweet.
+
+    This path operation post a tweet in the app.
+    
+    Parameters:
+        - Request **body** parameter:
+            - tweet: Tweet.
+    
+    Returns a **JSON** with the basic tweet information: 
+       **{**
+            **tweet_id: UUID,**
+            **content: str,**
+            **created_at: datetime,**
+            **updated_at: Optional[datetime],**
+            **by: User**
+        **}**
+    """
+    # Abrimos "tweets.json" || "r+" -> Lectura y escritura 
+    with open("tweets.json", "r+", encoding="utf-8") as f:
+        # f.read() -> str ((conv dicc/JSON)) -> json.loads()
+        # "results" -> lista de diccionarios (user.json->[])
+        results = json.loads(f.read())
+        
+        # req body data => str/py dict => append "results" -> tweets.json
+        # JSON tweet param(request body) => dict
+        tweet_dict = tweet.dict()
+        # Transformar datos no string a JSON
+        # tweet_id: UUID -> str
+        tweet_dict["tweet_id"] = str(tweet_dict["tweet_id"])
+        # created_at: datetime -> str
+        tweet_dict["created_at"] = str(tweet_dict["created_at"])
+        # updated_at: datetime -> str
+        tweet_dict["updated_at"] = str(tweet_dict["updated_at"])
+        # by: User -> str
+        tweet_dict["by"] = str(tweet_dict["by"])
+        results.append(tweet_dict)
+        # Colocarnos al principio del archivo
+        # para no escribir en la ubicación del archivo
+        f.seek(0)
+        # convertimos lista de diccionarios a JSON
+        f.write(json.dumps(results))
+        
+        return tweet
 
 ### /tweet/{tweet_id}
 @app.get(
